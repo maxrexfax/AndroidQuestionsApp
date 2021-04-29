@@ -13,10 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class QuizActivity extends AppCompatActivity {
-    //TODO Подсмотрев ответ, пользователь может повернуть CheatActivity, чтобы сбро-сить результат.После возвращения пользователь может повернуть QuizActivity, чтобы сбро-сить флаг mIsCheater.Пользователь может нажимать кнопку Next до тех пор, пока вопрос, ответ на который был подсмотрен, снова не появится на экране.
+    // TODO Подсмотрев ответ, пользователь может повернуть CheatActivity, чтобы сбро-сить результат. //Исправлено
+    // TODO После возвращения пользователь может повернуть QuizActivity, чтобы сбро-сить флаг mIsCheater. //Исправлено - НЕ исправлено: сброс всего массива mQuestionBank. Его нужно тоже сохранять.
+    // TODO Пользователь может нажимать кнопку Next до тех пор, пока вопрос, ответ на который был подсмотрен, снова не появится на экране.
 
-    private static final String TAG = "QuizActivity";
+    private static final String TAG = "QuizActivity01";
     private static final String KEY_INDEX = "index";
+    private static final String KEY_INDEX_CHEAT = "index.boolean";
     private Button mTrueButton;
     private Button mFalseButton;
     private Button mCheatButton;
@@ -69,6 +72,10 @@ public class QuizActivity extends AppCompatActivity {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
                 mIsCheater = false;
                 updateQuestion();
+                Log.d(TAG, "75   mCurrentIndex=" + mCurrentIndex + " isAnswerCheated=" + mQuestionBank[mCurrentIndex].isAnswerCheated());
+                if (mCurrentIndex == mQuestionBank.length) {
+                    mCurrentIndex = 0;
+                }
             }
         });
 
@@ -78,11 +85,9 @@ public class QuizActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mCurrentIndex = (mCurrentIndex - 1) % mQuestionBank.length;
                 if (mCurrentIndex <0) {
-                    mCurrentIndex = 0;
+                    mCurrentIndex = mQuestionBank.length-1;
                 }
-                if (mCurrentIndex == mQuestionBank.length) {
-                    mCurrentIndex = mQuestionBank.length - 1;
-                }
+                Log.d(TAG, "90   mCurrentIndex=" + mCurrentIndex + " isAnswerCheated=" + mQuestionBank[mCurrentIndex].isAnswerCheated());
                 updateQuestion();
             }
         });
@@ -99,11 +104,9 @@ public class QuizActivity extends AppCompatActivity {
              }
         });
 
-
-
-
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+            mIsCheater = savedInstanceState.getBoolean(KEY_INDEX_CHEAT, false);
         }
 
         updateQuestion();
@@ -114,6 +117,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
         Log.i(TAG, "onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
+        savedInstanceState.putBoolean(KEY_INDEX_CHEAT, mIsCheater);
     }
 
     private void updateQuestion() {
@@ -148,6 +152,7 @@ public class QuizActivity extends AppCompatActivity {
                 return;
             }
             mIsCheater = CheatActivity.wasAnswerShown(data);
+            mQuestionBank[mCurrentIndex].setAnswerCheated(mIsCheater);
         }
     }
 

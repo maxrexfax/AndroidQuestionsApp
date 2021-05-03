@@ -74,7 +74,7 @@ public class QuizActivity extends AppCompatActivity {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionsBank.size();
                 //mIsCheater = false;
                 updateQuestion();
-                Log.d(TAG, "75   mCurrentIndex=" + mCurrentIndex + " isAnswerCheated=" + mQuestionsBank.get(mCurrentIndex).getmIntAnswerTrue());
+                Log.d(TAG, "75   mCurrentIndex=" + mCurrentIndex + " isAnswerCheated=" + mQuestionsBank.get(mCurrentIndex).getIntAnswerTrue());
                 if (mCurrentIndex == mQuestionsBank.size()) {
                     mCurrentIndex = 0;
                 }
@@ -89,7 +89,7 @@ public class QuizActivity extends AppCompatActivity {
                 if (mCurrentIndex <0) {
                     mCurrentIndex = mQuestionsBank.size()-1;
                 }
-                Log.d(TAG, "90   mCurrentIndex=" + mCurrentIndex + " isAnswerCheated=" + mQuestionsBank.get(mCurrentIndex).getmIntAnswerCheated());
+                Log.d(TAG, "90   mCurrentIndex=" + mCurrentIndex + " isAnswerCheated=" + mQuestionsBank.get(mCurrentIndex).getIntAnswerCheated());
                 updateQuestion();
             }
         });
@@ -99,7 +99,7 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                // boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
-                boolean answerIsTrue = mQuestionsBank.get(mCurrentIndex).getmIntAnswerTrue()==1 ? true : false;
+                boolean answerIsTrue = (mQuestionsBank.get(mCurrentIndex).getIntAnswerTrue() == 1) ? true : false;
                 Intent i = CheatActivity.newIntent(QuizActivity.this, answerIsTrue);
                 startActivityForResult(i, REQUEST_CODE_CHEAT);
              }
@@ -112,6 +112,7 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         updateQuestion();
+        Log.d(TAG, "115   mCurrentIndex=" + mCurrentIndex + " isAnswerCheated=" + mQuestionsBank.get(mCurrentIndex).getIntAnswerTrue());
     }
 
 
@@ -133,11 +134,11 @@ public class QuizActivity extends AppCompatActivity {
 
     private void checkAnswer(boolean userPressedTrue) {
         //boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
-        boolean answerIsTrue = mQuestionsBank.get(mCurrentIndex).getmIntAnswerTrue() == 1 ? true : false;
+        boolean answerIsTrue = mQuestionsBank.get(mCurrentIndex).getIntAnswerTrue() == 1 ? true : false;
         int messageResId = 0;
 
         //if (mIsCheater)
-        if (mQuestionsBank.get(mCurrentIndex).getmIntAnswerCheated() == 1) {
+        if (mQuestionsBank.get(mCurrentIndex).getIntAnswerCheated() == 1) {
             messageResId = R.string.judgment_toast;
         } else {
             if (userPressedTrue == answerIsTrue) {
@@ -160,7 +161,7 @@ public class QuizActivity extends AppCompatActivity {
                 return;
             }
             //mIsCheater = CheatActivity.wasAnswerShown(data);
-            mQuestionsBank.get(mCurrentIndex).setmIntAnswerCheated(1);
+            mQuestionsBank.get(mCurrentIndex).setIntAnswerCheated(CheatActivity.wasAnswerShown(data) ? 1 : 0);
         }
     }
 

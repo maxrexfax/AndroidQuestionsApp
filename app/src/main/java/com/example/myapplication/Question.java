@@ -11,6 +11,12 @@ public class Question implements Parcelable {
 //    private boolean mAnswerTrue;//to decrease level of Android API exclude all boolean types from Parcelable class
 //    private boolean mAnswerCheated;
 
+    public Question(int textResId, int intAnswerTrue, int intAnswerCheated) {
+        mTextResId = textResId;
+        mIntAnswerTrue = intAnswerTrue;
+        mIntAnswerCheated = 0;
+    }
+
     public int getTextResID() {
 
         return mTextResId;
@@ -21,19 +27,22 @@ public class Question implements Parcelable {
         this.mTextResId = mTextResId;
     }
 
-    public int getmIntAnswerTrue() {
+    public int getIntAnswerTrue() {
+
         return mIntAnswerTrue;
     }
 
-    public void setmIntAnswerTrue(int mIntAnswerTrue) {
+    public void setIntAnswerTrue(int mIntAnswerTrue) {
+
         this.mIntAnswerTrue = mIntAnswerTrue;
     }
 
-    public int getmIntAnswerCheated() {
+    public int getIntAnswerCheated() {
+
         return mIntAnswerCheated;
     }
 
-    public void setmIntAnswerCheated(int mIntAnswerCheated) {
+    public void setIntAnswerCheated(int mIntAnswerCheated) {
         this.mIntAnswerCheated = mIntAnswerCheated;
     }
 
@@ -63,11 +72,7 @@ public class Question implements Parcelable {
 //        mAnswerCheated = AnswerCheated;
 //    }
 
-    public Question(int textResId, int intAnswerTrue, int intAnswerCheated) {
-        mTextResId = textResId;
-        mIntAnswerTrue = intAnswerTrue;
-        mIntAnswerCheated = intAnswerCheated;
-    }
+
 
     public Question(Parcel in) {
         mTextResId = in.readInt();

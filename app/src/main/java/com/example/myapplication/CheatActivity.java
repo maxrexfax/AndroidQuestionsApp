@@ -24,45 +24,18 @@ public class CheatActivity extends AppCompatActivity {
     private boolean wasAnswerShowned = false;
     private TextView mAnswerTextView;
     private Button mShowAnswer;
+    private  Animator anim = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cheat);
-
         mAnswerTextView = (TextView)findViewById(R.id.answer_text_view);
 
 
         mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false);
         mShowAnswer = (Button)findViewById(R.id.show_answer_button);
 
-        mShowAnswer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mAnswerIsTrue) {
-                    mAnswerTextView.setText(R.string.true_button);
-                } else {
-                    mAnswerTextView.setText(R.string.false_button);
-                }
-                wasAnswerShowned = true;
-                setAnswerShownResult();
-                if (Build.VERSION.SDK_INT >= 21) {
-                    int cx = mShowAnswer.getWidth() / 2;
-                    int cy = mShowAnswer.getHeight() / 2;
-                    float radius = mShowAnswer.getWidth();
-                    Animator anim = ViewAnimationUtils.createCircularReveal(mShowAnswer, cx, cy, radius, 0);
-                    anim.addListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            mAnswerTextView.setVisibility(View.VISIBLE);
-                            mShowAnswer.setVisibility(View.INVISIBLE);
-                        }
-                    });
-                    anim.start();
-                }
-            }
-        });
 
 
         if (savedInstanceState != null) {
@@ -79,6 +52,7 @@ public class CheatActivity extends AppCompatActivity {
     }
 
     private void setAnswerShownResult() {
+        Log.d(TAG, "setAnswerShownResult() wasAnswerShowned=" + wasAnswerShowned);
         Intent data = new Intent();
         data.putExtra(EXTRA_ANSWER_SHOWN, wasAnswerShowned);
         setResult(RESULT_OK, data);
@@ -124,4 +98,33 @@ public class CheatActivity extends AppCompatActivity {
         Log.d(TAG, "onDestroy() called");
     }
 
+    public void closeActivity(View view) {
+        setAnswerShownResult();
+        finish();
+    }
+
+    public void setResult(View v) {
+        if (mAnswerIsTrue) {
+            mAnswerTextView.setText(R.string.true_button);
+        } else {
+            mAnswerTextView.setText(R.string.false_button);
+        }
+        wasAnswerShowned = true;
+        setAnswerShownResult();
+        if (Build.VERSION.SDK_INT >= 21) {
+            int cx = mShowAnswer.getWidth() / 2;
+            int cy = mShowAnswer.getHeight() / 2;
+            float radius = mShowAnswer.getWidth();
+            anim = ViewAnimationUtils.createCircularReveal(mShowAnswer, cx, cy, radius, 0);
+            anim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    mShowAnswer.setVisibility(View.INVISIBLE);
+                }
+            });
+
+            anim.start();
+        }
+    }
 }

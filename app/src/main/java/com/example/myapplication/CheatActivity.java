@@ -23,6 +23,7 @@ public class CheatActivity extends AppCompatActivity {
     private boolean mAnswerIsTrue;
     private boolean wasAnswerShowned = false;
     private TextView mAnswerTextView;
+    private TextView mApiNumberTextView;
     private Button mShowAnswer;
     private  Animator anim = null;
 
@@ -31,17 +32,16 @@ public class CheatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cheat);
         mAnswerTextView = (TextView)findViewById(R.id.answer_text_view);
-
-
+        mApiNumberTextView = (TextView)findViewById(R.id.api_number_text_view);
         mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false);
         mShowAnswer = (Button)findViewById(R.id.show_answer_button);
-
-
 
         if (savedInstanceState != null) {
             wasAnswerShowned = savedInstanceState.getBoolean(EXTRA_ANSWER_SHOWN);
             setAnswerShownResult();
         }
+
+        mApiNumberTextView.setText("API level " + Build.VERSION.SDK_INT);
     }
 
     @Override

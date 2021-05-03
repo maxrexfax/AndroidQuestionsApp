@@ -33,4 +33,10 @@
         android:onClick="closeActivity"
         android:text="@string/go_back"
         />
+    <TextView
+        android:id="@+id/api_number_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        tools:text="Answer"/>
 </LinearLayout>

@@ -6,42 +6,10 @@ import android.os.Parcelable;
 
 public class Question implements Parcelable {
     private int mTextResId;
-    private boolean mAnswerTrue;
-    private boolean mAnswerCheated;
-
-    public boolean isAnswerCheated() {
-
-        return mAnswerCheated;
-    }
-
-    public void setAnswerCheated(boolean mAnswerCheated) {
-
-        this.mAnswerCheated = mAnswerCheated;
-    }
-
-    public boolean ismAnswerCheated() {
-        return mAnswerCheated;
-    }
-
-    public void setmAnswerCheated(boolean mAnswerCheated) {
-        this.mAnswerCheated = mAnswerCheated;
-    }
-
-    public Question(int textResId, boolean answerTrue, boolean AnswerCheated) {
-        mTextResId = textResId;
-        mAnswerTrue = answerTrue;
-        mAnswerCheated = AnswerCheated;
-    }
-
-    public boolean isAnswerTrue() {
-
-        return mAnswerTrue;
-    }
-
-    public void setAnswerTrue(boolean mAnswerTrue) {
-
-        this.mAnswerTrue = mAnswerTrue;
-    }
+    private int mIntAnswerTrue;
+    private int mIntAnswerCheated;
+//    private boolean mAnswerTrue;//to decrease level of Android API exclude all boolean types from Parcelable class
+//    private boolean mAnswerCheated;
 
     public int getTextResID() {
 
@@ -53,30 +21,83 @@ public class Question implements Parcelable {
         this.mTextResId = mTextResId;
     }
 
+    public int getmIntAnswerTrue() {
+        return mIntAnswerTrue;
+    }
+
+    public void setmIntAnswerTrue(int mIntAnswerTrue) {
+        this.mIntAnswerTrue = mIntAnswerTrue;
+    }
+
+    public int getmIntAnswerCheated() {
+        return mIntAnswerCheated;
+    }
+
+    public void setmIntAnswerCheated(int mIntAnswerCheated) {
+        this.mIntAnswerCheated = mIntAnswerCheated;
+    }
+
+//    public boolean isAnswerTrue() {
+//
+//        return mAnswerTrue;
+//    }
+//
+//    public void setAnswerTrue(boolean mAnswerTrue) {
+//
+//        this.mAnswerTrue = mAnswerTrue;
+//    }
+//
+//    public boolean isAnswerCheated() {
+//
+//        return mAnswerCheated;
+//    }
+//
+//    public void setAnswerCheated(boolean mAnswerCheated) {
+//
+//        this.mAnswerCheated = mAnswerCheated;
+//    }
+
+//    public Question(int textResId, boolean answerTrue, boolean AnswerCheated) {
+//        mTextResId = textResId;
+//        mAnswerTrue = answerTrue;
+//        mAnswerCheated = AnswerCheated;
+//    }
+
+    public Question(int textResId, int intAnswerTrue, int intAnswerCheated) {
+        mTextResId = textResId;
+        mIntAnswerTrue = intAnswerTrue;
+        mIntAnswerCheated = intAnswerCheated;
+    }
 
     public Question(Parcel in) {
         mTextResId = in.readInt();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            mAnswerTrue = in.readBoolean();
-            mAnswerCheated = in.readBoolean();
-        }
+        mIntAnswerTrue = in.readInt();
+        mIntAnswerCheated = in.readInt();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            mAnswerTrue = in.readBoolean();
+//            mAnswerCheated = in.readBoolean();
+//        }
     }
 
     public int describeContents() {
+
         return 0;
     }
 
     @Override
     public String toString() {
-        return mTextResId + ": " + mAnswerTrue + ":" + mAnswerCheated;
+        //return mTextResId + ": " + mAnswerTrue + ":" + mAnswerCheated;
+        return mTextResId + ": " + mIntAnswerTrue + ":" + mIntAnswerCheated;
     }
 
     public void writeToParcel(Parcel out, int flags) {
         out.writeInt(mTextResId);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            out.writeBoolean(mAnswerTrue);
-            out.writeBoolean(mAnswerCheated);
-        }
+        out.writeInt(mIntAnswerTrue);
+        out.writeInt(mIntAnswerCheated);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            out.writeBoolean(mAnswerTrue);
+//            out.writeBoolean(mAnswerCheated);
+//        }
     }
 
     public static final Parcelable.Creator<Question> CREATOR = new Parcelable.Creator<Question>() {
